@@ -1,0 +1,155 @@
+{
+  "COURSES": [
+    {
+      "id": 1,
+      "name": "Course 1",
+      "thumbnail": "https://dcx0p3on5z8dw.cloudfront.net/Aakash/s3fs-public/pdf_management_files/target_solutions/Landing-Page-_500x320.jpg",
+      "createdOn": "22/11/2022",
+      "overview": {
+        "description": "<p>In this two-week course, we’ll step through major challenges within corporate IT and how to address them with the disciplined use of design thinking, Lean Startup, and agile as a team framework.</p><p>",
+        "iframe": "https://www.youtube.com/embed/t-5vSIY-yC0"
+      },
+      "modules": [1, 4, 2],
+      "instructors": [1, 2]
+    }
+  ],
+
+  "MODULES": [
+    {
+      "id": 1,
+      "name": "Module 1",
+      "description": "Module 1 Description",
+      "resources": [
+        {
+          "prevResource": -1,
+          "resourceID": 1,
+          "nextResource": 4
+        },
+        {
+          "prevResource": 1,
+          "resourceID": 4,
+          "nextResource": 2
+        },
+        {
+          "prevResource": 4,
+          "resourceID": 2,
+          "nextResource": -1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Module 2",
+      "description": "Module 2 Description",
+      "resources": [
+        {
+          "prevResource": -1,
+          "resourceID": 1,
+          "nextResource": -1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Module 3",
+      "description": "Module 3 Description",
+      "resources": [
+        {
+          "prevResource": -1,
+          "resourceID": 1,
+          "nextResource": -1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Module 4",
+      "description": "Module 4 Description",
+      "resources": [
+        {
+          "prevResource": -1,
+          "resourceID": 1,
+          "nextResource": -1
+        }
+      ]
+    }
+  ],
+
+  "INSTRUCTORS": [
+    {
+      "id": 1,
+      "name": "Instructor 1"
+    }
+  ],
+
+  "RESOURCES": [
+    {
+      "id": 1,
+      "name": "Resource 1 - Quiz",
+      "type": "quiz",
+      "duration": 5,
+      "completion_value": 2,
+      "data": {
+        "nQuestions": 3,
+        "passing_grade": 70,
+        "questions": [2, 4, 5]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Resource 2 - Lesson",
+      "type": "lesson",
+      "duration": 2,
+      "completion_value": 1,
+      "data": {
+        "description": "I am Description of Lesson - Resource 2"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Resource 3 - Video",
+      "type": "video",
+      "duration": 15,
+      "completion_value": 10,
+      "data": {
+        "url": "https://www.youtube.com/watch?v=zawbIdY6ux0"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Resource 4 - Video",
+      "type": "video",
+      "duration": 10,
+      "completion_value": 7,
+      "data": {
+        "url": "https://www.youtube.com/watch?v=zawbIdY6ux0"
+      }
+    }
+  ],
+
+  "PROGRESS": [
+    {
+      "id": 1,
+      "courseID": 1,
+      "studentID": 1,
+      "enrolledOn": "22/11/2022",
+      "total_completed": 23,
+      "name": "Course 1",
+      "lastAccessedOn": "22/11/2022",
+      "map": [
+        {
+          "resourceID": 1,
+          "status": -1
+        },
+        {
+          "resourceID": 4,
+          "status": -1
+        },
+        {
+          "resourceID": 2,
+          "status": 1
+        }
+      ]
+    }
+  ]
+}

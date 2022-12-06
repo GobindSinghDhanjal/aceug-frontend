@@ -1,0 +1,21 @@
+import React from "react";
+
+const Overview = ({ overview }) => {
+  return (
+    <>
+      <div id="overview" className="tab-pane fade show active">
+        <div className="course-overview">
+          <div className="overview-course-video">
+            <iframe
+              title="Drive Digital Transformation With Platform Strategies | Info-Tech Analyst Perspective"
+              src={overview.iframe}
+            ></iframe>
+            <div dangerouslySetInnerHTML={{ __html: overview.description }} />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Overview;

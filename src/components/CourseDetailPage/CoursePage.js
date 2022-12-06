@@ -1,0 +1,91 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchCourse } from "../../redux/courses/courseActions";
+import Curriculum from "./Curriculum";
+import Instructors from "./Instructors";
+import Overview from "./Overview";
+import Reviews from "./Reviews";
+import SideBar from "./SideBar";
+
+const CoursePage = () => {
+  const dispatch = useDispatch();
+  const { courseID } = useParams();
+
+  const course = useSelector((state) => state.courses.course);
+
+  useEffect(() => {
+   
+    console.log(courseID);
+    dispatch(fetchCourse(1));
+    console.log("thasdasasc");
+    console.log(course);
+  }, [dispatch]);
+
+  
+  return (
+    course.map && (
+      <>
+        <div className="page-title-section section">
+          <div className="page-title">
+            <div className="container">
+              <h1 className="title">{course.name}</h1>
+            </div>
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="container">
+            <div className="row max-mb-n50">
+              <div className="col-lg-8 col-12 order-lg-1 max-mb-50">
+                <div className="course-details-wrapper">
+                  <div className="course-nav-tab">
+                    <ul className="nav">
+                      <li>
+                        <a
+                          className="active"
+                          data-bs-toggle="tab"
+                          href="#overview"
+                        >
+                          Overview
+                        </a>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="tab" href="#curriculum">
+                          Curriculum
+                        </a>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="tab" href="#instructor">
+                          Instructor
+                        </a>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="tab" href="#reviews">
+                          Reviews
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="tab-content">
+                    <Overview overview={course.overview} />
+
+                    <Curriculum modules={course.modules} />
+
+                    <Instructors instructors={course.instructors} />
+
+                    <Reviews data={course.reviews} />
+                  </div>
+                </div>
+              </div>
+
+              <SideBar course={course} />
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  );
+};
+
+export default CoursePage;

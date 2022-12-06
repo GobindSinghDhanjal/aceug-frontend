@@ -1,0 +1,27 @@
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchResource } from "../../redux/courseprogress/cpActions";
+
+const ListQuiz = ({ resource }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <a
+      className={
+        resource.status > 1
+          ? "list-group-item list-group-item-action flex-column align-items-start"
+          : "list-group-item list-group-item-action flex-column align-items-start list-group-item-success"
+      }
+      onClick={() => {
+        dispatch(fetchResource(resource.id, resource.type));
+      }}
+    >
+      <div className="d-flex w-100 justify-content-between">
+        <h5 className="mb-1">{resource.name}</h5>
+      </div>
+      <small>Random Dummy Text here</small>
+    </a>
+  );
+};
+
+export default ListQuiz;
