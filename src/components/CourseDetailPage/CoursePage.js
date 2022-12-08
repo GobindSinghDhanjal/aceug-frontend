@@ -1,30 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { fetchCourse } from "../../redux/courses/courseActions";
 import Curriculum from "./Curriculum";
 import Instructors from "./Instructors";
 import Overview from "./Overview";
 import Reviews from "./Reviews";
 import SideBar from "./SideBar";
+import { baseURL } from "../../shared/baseUrl";
+import axios from "axios";
 
 const CoursePage = () => {
-  const dispatch = useDispatch();
-  const { courseID } = useParams();
-
-  const course = useSelector((state) => state.courses.course);
+  const [course, setCourse] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id=searchParams.get("courseId")
+  // const id = useParams();
 
   useEffect(() => {
-   
-    console.log(courseID);
-    dispatch(fetchCourse(1));
-    console.log("thasdasasc");
-    console.log(course);
-  }, [dispatch]);
 
+    axios
+    .get(baseURL + "courses/"+ id.toString())
+    .then((data) =>
+    data.data
+    )
+    .then((course) => {
+      setCourse(course);
+    })
+    .catch((err) => console.log(err));
+  }, []);
+
+  if(!course){
+    return(<h1>Loading</h1>)
+  }
   
   return (
-    course.map && (
+    
       <>
         <div className="page-title-section section">
           <div className="page-title">
@@ -67,8 +77,8 @@ const CoursePage = () => {
                       </li>
                     </ul>
                   </div>
-                  <div className="tab-content">
-                    <Overview overview={course.overview} />
+                  <div className="tab-content mb-5">
+                    <Overview overview={(course.overview)} />
 
                     <Curriculum modules={course.modules} />
 
@@ -85,7 +95,6 @@ const CoursePage = () => {
         </div>
       </>
     )
-  );
 };
 
 export default CoursePage;

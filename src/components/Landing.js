@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TESTIMONIALS } from "../shared/data";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { baseURL } from "../shared/baseUrl";
+import { SignatureCourse } from "./SignatureCourse";
+import { firebase, auth } from '../firebase';
 
 const Landing = () => {
+
+  const [courses, setCourses] = useState([]);
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    axios
+      .get(baseURL + "courses/signature/course")
+      .then((data) => data.data)
+      .then((courses) => {
+        setCourses(courses);
+      })
+      .catch((err) => console.log(err));
+
+      
+  }, []);
+
   return (
     <>
       <div id="page" className="section">
@@ -33,12 +53,12 @@ const Landing = () => {
                       every student in strengthening their weaker sections
                     </p>
                   </div>
-                  <a
-                    href="/courses"
+                  <Link
+                    to="/courses"
                     className="btn btn-primary btn-hover-secondary"
                   >
                     Explore Course Journeys
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -113,9 +133,10 @@ const Landing = () => {
 
             <div className="row row-cols-xl-4 row-cols-sm-2 row-cols-1 g-0">
               <div className="col" data-aos="fade-up">
-                <a
-                  href="courses-grid-1.html"
+                <Link
+                  to="/courses"
                   className="icon-box text-center"
+                  style={{height: "100%"}}
                   data-vivus-hover
                 >
                   <div className="icon">
@@ -137,12 +158,13 @@ const Landing = () => {
                       Start here <i className="far fa-long-arrow-right"></i>
                     </span>
                   </div>
-                </a>
+                </Link>
               </div>
 
               <div className="col" data-aos="fade-up">
-                <a
-                  href="courses-grid-1.html"
+                <Link
+                  to="/courses"
+                  style={{height: "100%"}}
                   className="icon-box text-center"
                   data-vivus-hover
                 >
@@ -165,12 +187,13 @@ const Landing = () => {
                       Discover now <i className="far fa-long-arrow-right"></i>
                     </span>
                   </div>
-                </a>
+                </Link>
               </div>
 
               <div className="col" data-aos="fade-up">
-                <a
-                  href="courses-grid-1.html"
+                <Link
+                  to="/courses"
+                  style={{height: "100%"}}
                   className="icon-box text-center"
                   data-vivus-hover
                 >
@@ -192,12 +215,13 @@ const Landing = () => {
                       Get Free Quote <i className="far fa-long-arrow-right"></i>
                     </span>
                   </div>
-                </a>
+                </Link>
               </div>
 
               <div className="col" data-aos="fade-up">
-                <a
-                  href="courses-grid-1.html"
+                <Link
+                  to="/courses"
+                  style={{height: "100%"}}
                   className="icon-box text-center"
                   data-vivus-hover
                 >
@@ -217,7 +241,7 @@ const Landing = () => {
                       Start now <i className="far fa-long-arrow-right"></i>
                     </span>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -326,11 +350,10 @@ const Landing = () => {
                   },
                 }}
                 loop
-                onSwiper={(swiper) => console.log(swiper)}
               >
-                {TESTIMONIALS.map((TESTIMONIAL) => {
+                {TESTIMONIALS.map((TESTIMONIAL,i) => {
                   return (
-                    <SwiperSlide>
+                    <SwiperSlide key={i}>
                       <div className="testimonial col-12">
                         <div className="image">
                           <img src={TESTIMONIAL.imgUrl} alt="" />
@@ -432,81 +455,12 @@ const Landing = () => {
               <h2 className="title">Current Signature Courses</h2>
             </div>
 
+  
+        
             <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 max-mb-n30">
-              <div className="col max-mb-30" data-aos="fade-up">
-                <div className="course-2">
-                  <div className="thumbnail">
-                    <a
-                      href="course-details-sticky-feature-bar.html"
-                      className="image"
-                    >
-                      <img
-                        src="assets/images/courses/370/course-6.jpg"
-                        alt="Course Image"
-                      />
-                    </a>
-                  </div>
-                  <div className="info">
-                    <span className="price">$59</span>
-                    <span className="date">Mar 20, 2019</span>
-                    <h3 className="title">
-                      <a href="course-details-sticky-feature-bar.html">
-                        Introduction to Javascript for Beginners
-                      </a>
-                    </h3>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col max-mb-30" data-aos="fade-up">
-                <div className="course-2">
-                  <div className="thumbnail">
-                    <a
-                      href="course-details-sticky-feature-bar.html"
-                      className="image"
-                    >
-                      <img
-                        src="assets/images/courses/370/course-1.jpg"
-                        alt="Course Image"
-                      />
-                    </a>
-                  </div>
-                  <div className="info">
-                    <span className="price">$40</span>
-                    <span className="date">Jan 15, 2020</span>
-                    <h3 className="title">
-                      <a href="course-details-sticky-feature-bar.html">
-                        Learning to Write as a Professional Author
-                      </a>
-                    </h3>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col max-mb-30" data-aos="fade-up">
-                <div className="course-2">
-                  <div className="thumbnail">
-                    <a
-                      href="course-details-sticky-feature-bar.html"
-                      className="image"
-                    >
-                      <img
-                        src="assets/images/courses/370/course-5.jpg"
-                        alt="Course Image"
-                      />
-                    </a>
-                  </div>
-                  <div className="info">
-                    <span className="price">$39</span>
-                    <span className="date">Aug 18, 2019</span>
-                    <h3 className="title">
-                      <a href="course-details-sticky-feature-bar.html">
-                        Master jQuery in a Short Period of Time
-                      </a>
-                    </h3>
-                  </div>
-                </div>
-              </div>
+            {courses.map((course,i)=>{
+              return (<SignatureCourse key={i} course={course} />)
+            })}
             </div>
 
             <div className="row max-mt-70">

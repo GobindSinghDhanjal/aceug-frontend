@@ -1,6 +1,11 @@
 import React from "react";
 
 const Overview = ({ overview }) => {
+
+  if(!overview){
+    return (<h1>Loading</h1>)
+  }
+
   return (
     <>
       <div id="overview" className="tab-pane fade show active">

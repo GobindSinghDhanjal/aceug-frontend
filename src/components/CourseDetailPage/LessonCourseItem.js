@@ -3,7 +3,7 @@ import React from "react";
 const LessonCourseItem = ({ lesson }) => {
   return (
     <li className="course-item">
-      <a className="section-item-link lesson" href="JavaScript:Void(0);">
+      <a className="section-item-link lesson" href="">
         <span className="item-name">{lesson.name}</span>
         <div className="course-item-meta">
           <span className="item-meta duration">{lesson.duration} min</span>

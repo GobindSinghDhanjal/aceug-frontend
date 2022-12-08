@@ -6,6 +6,7 @@ import * as React from "react";
 import Login from "./components/Authentication/Login";
 import CheckOutPage from "./components/CheckOut/CheckOutPage";
 import SingleCourseDash from "./components/CourseProgress/SingleCourseDash";
+import { SignUp } from "./components/Authentication/SignUp";
 
 function App() {
   return (
@@ -13,9 +14,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/checkout" element={<CheckOutPage />} />
-        <Route path="/courses/:id" element={<CoursePage />} />
+        <Route path="/course" element={<CoursePage />} />
+        {/* <Route path="/course/:id" element={<CoursePage />} /> */}
         <Route exact path="/course-dash" element={<SingleCourseDash />} />
       </Routes>
     </BrowserRouter>

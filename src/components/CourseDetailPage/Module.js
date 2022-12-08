@@ -4,6 +4,11 @@ import QuizCourseItem from "./QuizCourseItem";
 import VideoCourseItem from "./VideoCourseItem";
 
 const Module = ({ module }) => {
+
+  if(!module){
+    return (<h1>Loading</h1>)
+  }
+
   return (
     <li className="single-curriculum-section">
       <div className="section-header">
@@ -13,14 +18,14 @@ const Module = ({ module }) => {
         </div>
       </div>
       <ul className="section-content">
-        {module.resources.map((resource) => {
+        {module.resources.map((resource,i) => {
           switch (resource.type) {
             case "video":
-              return <VideoCourseItem video={resource} />;
+              return <VideoCourseItem key={i} video={resource} />;
             case "quiz":
-              return <QuizCourseItem quiz={resource} />;
+              return <QuizCourseItem key={i} quiz={resource} />;
             case "lesson":
-              return <LessonCourseItem lesson={resource} />;
+              return <LessonCourseItem key={i} lesson={resource} />;
             default:
               return;
           }

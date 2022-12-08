@@ -1,8 +1,20 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 
 import Razorpay from "../CheckOut/Razorpay";
 
 const SideBar = ({ course }) => {
+
+  const { user, isAuthenticated, isLoading, loginWithPopup } = useAuth0();
+
+  function onEnrollClick() {
+
+    if(user && isAuthenticated){
+      alert("Enrolled");
+    }else{
+      loginWithPopup();
+    }
+  }
   return (
     <>
       <div className="col-lg-4 col-12 order-lg-2 max-mb-50" id="sticky-sidebar">
@@ -17,7 +29,7 @@ const SideBar = ({ course }) => {
                   </span>
                   <span className="meta-value">
                     <span className="price">
-                      ${course.price}
+                     ₹ {course.price}
                       <span className="decimals-separator">.00</span>
                     </span>
                   </span>
@@ -58,12 +70,10 @@ const SideBar = ({ course }) => {
                 <div className="lp-course-buttons">
                   <button
                     className="btn btn-primary btn-hover-secondary btn-width-100"
-                    onClick={() => {}}
+                    onClick={onEnrollClick}
                   >
                     Enroll
                   </button>
-
-                  <Razorpay />
                 </div>
                 <div className="entry-course-share">
                   <div className="share-media">
@@ -75,7 +85,7 @@ const SideBar = ({ course }) => {
                         className="hint--bounce hint--top hint--theme-two"
                         aria-label="Facebook"
                         target="_blank"
-                        href="JavaScript:Void(0);"
+                        href=""
                       >
                         <i className="fab fa-facebook-f"></i>
                       </a>
@@ -84,7 +94,7 @@ const SideBar = ({ course }) => {
                         className="hint--bounce hint--top hint--theme-two"
                         aria-label="Twitter"
                         target="_blank"
-                        href="JavaScript:Void(0);"
+                        href=""
                       >
                         <i className="fab fa-twitter"></i>
                       </a>
@@ -93,7 +103,7 @@ const SideBar = ({ course }) => {
                         className="hint--bounce hint--top hint--theme-two"
                         aria-label="Linkedin"
                         target="_blank"
-                        href="JavaScript:Void(0);"
+                        href=""
                       >
                         <i className="fab fa-linkedin"></i>
                       </a>
@@ -102,7 +112,7 @@ const SideBar = ({ course }) => {
                         className="hint--bounce hint--top hint--theme-two"
                         aria-label="Tumblr"
                         target="_blank"
-                        href="JavaScript:Void(0);"
+                        href=""
                       >
                         <i className="fab fa-tumblr-square"></i>
                       </a>
@@ -114,6 +124,7 @@ const SideBar = ({ course }) => {
           </div>
         </div>
       </div>
+  
     </>
   );
 };

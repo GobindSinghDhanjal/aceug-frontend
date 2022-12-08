@@ -6,13 +6,12 @@ import CourseTile from "./CourseTile";
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   useEffect(() => {
-    
     axios
       .get(baseURL + "courses")
       .then((data) => data.data)
-      .then((courses) => {setCourses(courses)
-        console.log("cascsacassc");
-      console.log(courses);} )
+      .then((courses) => {
+        setCourses(courses);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -37,8 +36,8 @@ const Courses = () => {
           </div>
 
           <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 max-mb-n30">
-            {courses.map((course) => (
-              <CourseTile course={course} />
+            {courses.map((course, i) => (
+              <CourseTile key={i} course={course} />
             ))}
           </div>
 
