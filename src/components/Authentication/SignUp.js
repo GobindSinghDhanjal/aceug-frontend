@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import OtplessSdk from "otpless-js-sdk";
 import { firebase, auth } from "../../firebase";
+import axios from "axios";
+import { baseURL } from "../../shared/baseUrl";
 
 export const SignUp = () => {
   const [phone, setPhone] = useState("");
@@ -41,7 +43,7 @@ export const SignUp = () => {
     auth
       .signInWithPhoneNumber(phone_number, appVerifier)
       .then((confirmationResult) => {
-        console.log("otp sent");
+        alert("OTP sent");
         window.confirmationResult = confirmationResult;
       })
       .catch((error) => {
@@ -75,9 +77,36 @@ export const SignUp = () => {
     console.log(e.target.firstName.value);
 
     if (e.target.password.value === e.target.confirmPassword.value) {
-        if(numberVerified && user){
-            alert("Done")
+      if (numberVerified && user) {
+        alert("Done");
+        const data = {
+          email: e.target.email.value,
+          password: e.target.password.value,
+          first_name: e.target.firstName.value,
+          last_name: e.target.lastName.value,
+          class: e.target.class.value,
+          phone: e.target.phone.value
         }
+        axios
+          .post(baseURL + "users/signup",data)
+          .then((response) => {
+            console.log(response);
+            const success = response.data.success;
+            const message = response.data.data.message;
+
+            if (success) {
+              alert(message);
+            } else {
+              alert(message);
+            }
+          })
+          .catch((error) => {
+            const errorMsg = error.message;
+            alert(errorMsg);
+          });
+      } else {
+        alert("Please enter the correct otp");
+      }
     } else {
       alert("Password Doesn't match");
     }
@@ -114,7 +143,7 @@ export const SignUp = () => {
                           type="text"
                           required
                           id="firstName"
-                          name="First Name"
+                          name="firstName"
                           placeholder="First Name"
                         />
                       </div>
@@ -139,12 +168,12 @@ export const SignUp = () => {
                         />
                       </div>
                       <div className="single-input mb-30">
-                        <label htmlFor="username">Email</label>
+                        <label htmlFor="email">Email</label>
                         <input
                           type="email"
                           required
-                          id="username"
-                          name="username"
+                          id="email"
+                          name="email"
                           placeholder="Email"
                         />
                       </div>
@@ -155,14 +184,16 @@ export const SignUp = () => {
                             <input
                               type="tel"
                               required
+                              minLength={10}
+                              maxLength={10}
                               id="phone"
                               name="phone"
-                              placeholder="9999999999"
+                              placeholder="Contact Number"
                               value={phone}
                               onChange={(e) => setPhone(e.target.value)}
                             />
                           </div>
-                          <div className="col-4">
+                          <div className="col-5 col-md-4">
                             <label htmlFor="otp">OTP</label>
                             <input
                               type="text"
@@ -209,6 +240,7 @@ export const SignUp = () => {
                         <input
                           type="password"
                           required
+                          minLength={8}
                           id="password"
                           name="password"
                           placeholder="Password"
@@ -221,6 +253,7 @@ export const SignUp = () => {
                         <input
                           type="password"
                           required
+                          minLength={8}
                           id="confirmPassword"
                           name="confirmPassword"
                           placeholder="Confirm Password"
