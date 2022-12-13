@@ -1,22 +1,22 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { useRef } from "react";
 import { baseURL } from "../../shared/baseUrl";
-import { Option } from "./Option";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Question } from "./Question";
+import { SingleOption } from "./SingleOption";
 
 export const Quiz = () => {
   const [name, setName] = useState("");
   const [time, setTime] = useState("");
   const [subject, setSubject] = useState("");
   const [tags, setTags] = useState("");
-  const [minimumGrade, setMinimumGrade] = useState();
+  const [minimumGrade, setMinimumGrade] = useState(0);
   const form = useRef(null);
   const [statement, setStatement] = useState("");
-  const [postiveMarks, setPositiveMarks] = useState();
+  const [postiveMarks, setPositiveMarks] = useState(0);
   const [questions, setQuestions] = useState([]);
-  const [negativeMarks, setNegativeMarks] = useState();
+  const [negativeMarks, setNegativeMarks] = useState(0);
   const [explantion, setExplanation] = useState("");
   const [option, setOption] = useState([]);
   const [numOfOption, setNumOfOption] = useState(1);
@@ -24,68 +24,57 @@ export const Quiz = () => {
   function addOption(e) {
     e.preventDefault();
     setNumOfOption(numOfOption + 1);
-
-    // for (let index = 1; index <= numOfOption; index++) {
-    //   const value1 = eval("e.target.value" + index);
-    //   const correct = eval("e.target.correct" + index);
-    //   setOption((current) => [
-    //     ...current,
-    //     { value: value1.value, correct: correct.value },
-    //   ]);
-    // }
   }
 
-  useEffect(() => {
-    console.log("added option");
-    console.log(option);
-    
-    console.log("question");
-    console.log(questions);
+  function onDeleteOption(id) {
+    setOption((prevOption) => {
+      return prevOption.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
 
-  }, [option]);
+  function onEditClick(id) {
+    const question = questions[id];
+
+    setStatement(question.statement);
+    setExplanation(question.explanation);
+    setPositiveMarks(question.positive_marks);
+    setNegativeMarks(question.negative_marks);
+    const num = question.options.length;
+    setOption(question.options);
+    setNumOfOption(num);
+  }
+
+  function onDeleteClick(id) {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
 
   function onFormSubmit(e) {
     e.preventDefault();
 
-    const statement = e.target.statement.value;
-    const positiveMarks = e.target.positiveMarks.value;
-    const negativeMarks = e.target.negativeMarks.value;
-    const explanation = e.target.explanation.value;
-    
-
-
-    for (let index = 1; index <= numOfOption; index++) {
-      const value1 = eval("e.target.value" + index);
-      const correct = eval("e.target.correct" + index);
-      console.log(value1.value);
-      console.log(correct.value);
-      setOption((current) => [
-        ...current,
-        { value: value1.value, correct: correct.value },
-      ]);
-      if(index===numOfOption){
-        console.log("this is ooption");
-        console.log(option);
-        console.log("this is enddddddd ooption");
+    let optionTrue = false;
+    let numOfTrueOption = 0;
+    option.map((opt) => {
+      if (opt.correct === true) {
+        optionTrue = true;
+        numOfTrueOption += 1;
       }
+    });
+
+    if (optionTrue) {
+      if (numOfTrueOption === 1) {
+        addQues();
+      } else {
+        alert("Please give only one true value for options");
+      }
+    } else {
+      alert("Please give one true value for option");
     }
-
- 
-      setQuestions((current) => [
-        ...current,
-        {
-          statement: statement,
-          positive_marks: Number(positiveMarks),
-          negative_marks: Number(negativeMarks),
-          explanation: explanation,
-          options: option,
-        },
-      ]);
-
-
-  
-
-    // console.log(questions);
   }
 
   function addQues() {
@@ -99,11 +88,14 @@ export const Quiz = () => {
         options: option,
       },
     ]);
+    setOption([]);
+    setStatement("");
+    setExplanation("");
+    setNumOfOption(1);
   }
 
   function addQuiz(e) {
     e.preventDefault();
-    console.log("on Add quiz");
 
     const data = {
       name: name,
@@ -114,15 +106,34 @@ export const Quiz = () => {
       questions: questions,
     };
 
+    if(name===""){
+      alert("Please Enter Name");
+    }else if(subject===""){
+      alert("Please Enter Subject")
+    }else if(time===""){
+      alert("Please Enter time")
+    }else if(tags===""){
+      alert("Please Enter tags")
+    }else{
+
     axios
       .post(baseURL + "quiz/add-quiz", data)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        alert(response.data.data.message);
+        setName("");
+        setSubject("");
+        setTime("");
+        setTags("");
+        setMinimumGrade(0);
+        setQuestions([]);
       })
       .catch((error) => {
         const errorMsg = error.message;
         alert(errorMsg);
       });
+
+    }
   }
 
   return (
@@ -145,9 +156,13 @@ export const Quiz = () => {
                     <h1 className="title">Questions</h1>
                     {questions.map((ques, i) => {
                       return (
-                        <div key={i} className="login-form-wrapper p-3 mb-4">
-                          Ques. {ques.statement}
-                        </div>
+                        <Question
+                          key={i}
+                          id={i}
+                          question={ques.statement}
+                          deleteQues={onDeleteClick}
+                          editQues={onEditClick}
+                        />
                       );
                     })}
                   </div>
@@ -298,18 +313,26 @@ export const Quiz = () => {
 
                       <div className="login-form-wrapper p-3 mb-4">
                         Options
-                        {[...Array(numOfOption)].map((e, i) => (
-                          <Option key={i} number={i + 1} />
-                        ))}
-                        {/* <Option/> */}
-                        <div className="single-input mb-30">
-                          <button
-                            onClick={addOption}
-                            className="btn btn-primary btn-hover-secondary btn-width-100"
-                          >
-                            Add Option
-                          </button>
-                        </div>
+                        {option.map((opt, i) => {
+                          return (
+                            <div className="login-form-wrapper p-3 mb-4 ">
+                              <div className="row">
+                                <div className="col-10">
+                                  <div>Value : {opt.value}</div>
+                                  <div>Correct : {opt.correct.toString()}</div>
+                                </div>
+                                <div className="col">
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      onDeleteOption(i);
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        <SingleOption setOption={setOption} />
                       </div>
 
                       <div className="single-input mb-30">
