@@ -6,25 +6,35 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { baseURL } from "../../shared/baseUrl";
 
 function AddCoursePage() {
   const [instructorName, setInstructorName] = React.useState("");
+  const [instructor, setInstructor] = useState([]);
+  const [instructorRequired, setInstructorRequired] = useState(false);
 
   const [moduleName, setModuleName] = React.useState("");
+  const [modules, setModules] = useState([]);
   const [addModule, setAddModule] = React.useState("none");
   const [addModuleVisible, setAddModuleVisible] = React.useState("display");
+  const [moduleRequired, setModuleRequired] = useState(false);
 
   const [resourceName, setResourceName] = React.useState("");
   const [resourceType, setResourceType] = React.useState("");
   const [addResource, setAddResource] = React.useState("none");
   const [addResourceVisible, setAddResourceVisible] = React.useState("display");
+  const [addResourceRequired, setAddResourceRequired] = useState(false);
 
   const [video, setVideo] = useState("");
+  const [videoRequired, setVideoRequired] = useState(false);
   const [lesson, setLesson] = useState("");
+  const [lessonRequired, setLessonRequired] = useState(false);
   const [quiz, setQuiz] = useState("");
+  const [quizRequired, setQuizRequired] = useState(false);
 
   const [videoPanel, setVideoPanel] = useState("none");
   const [lessonPanel, setLessonPanel] = useState("none");
@@ -33,6 +43,35 @@ function AddCoursePage() {
   useEffect(() => {
     handleChange5(resourceType);
   }, [resourceType]);
+
+  useEffect(()=>{
+    axios.get(baseURL+"instructors").then((response)=>{
+      if(response.data.success){
+        setInstructor(response.data.data);
+      }else{
+        console.log("Some error occurred");
+        console.log(response.data);
+      }
+    }).catch((error)=>{
+      console.log(error);
+    });
+
+    axios.get(baseURL+"modules").then((response)=>{
+      if(response.data.success){
+        setModules(response.data.data);
+      }else{
+        console.log("Some error occurred");
+        console.log(response.data);
+      }
+    }).catch((error)=>{
+      console.log(error);
+    });
+
+  },[])
+
+  useEffect(()=>{
+    console.log(instructorName)
+  },[instructorName])
 
   const handleChange = (event) => {
     setInstructorName(event.target.value);
@@ -57,19 +96,66 @@ function AddCoursePage() {
       setQuizPanel("none");
       setVideoPanel("block");
       setLessonPanel("none");
+      setQuizRequired(false);
+      setLessonRequired(false);
+      setVideoRequired(true);
     }
     if (resourceType === "quiz") {
       setQuizPanel("block");
       setVideoPanel("none");
       setLessonPanel("none");
+      setQuizRequired(true);
+      setLessonRequired(false);
+      setVideoRequired(false);
     }
 
     if (resourceType === "lesson") {
       setLessonPanel("block");
       setVideoPanel("none");
       setQuizPanel("none");
+      setQuizRequired(false);
+      setLessonRequired(true);
+      setVideoRequired(false);
     }
   };
+
+  function formSubmit(e) {
+    e.preventDefault();
+    console.log("hello");
+    console.log(e.target.courseName);
+    console.log(e.target.courseName.value);
+    console.log("thumbnail");
+    console.log(e.target.thumbnail.files[0]);
+
+    const data = new FormData();
+
+    const overview = {
+      description: e.target.overviewDescription,
+      iframe: e.target.overviewIframe.files[0],
+    };
+
+    data.append("name", e.target.courseName.value);
+    data.append("thumbnail", e.target.thumbnail.files[0]);
+    data.append("overviewDescription", e.target.overviewDescription.value);
+    data.append("iframe", e.target.overviewIframe.files[0]);
+    data.append("price",e.target.price.value);
+    data.append("duration",e.target.duration.value);
+    data.append("lectures", e.target.lectures.value);
+    data.append("language", e.target.language.value);
+    data.append("enrolled", e.target.enrolled.value);
+    data.append("signature", e.target.signature.checked);
+
+    console.log(data);
+
+    axios
+      .post(baseURL + "courses", data)
+      .then((response)=>{
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <div>
@@ -90,7 +176,7 @@ function AddCoursePage() {
                 <div className="col-10">
                   <div className="login-form-wrapper">
                     <h3 className="title">Add a Course</h3>
-                    <form className="login-form" action="">
+                    <form className="login-form" onSubmit={formSubmit}>
                       <div className="single-input mb-30">
                         <label htmlFor="courseName">Course Name</label>
                         <input
@@ -104,6 +190,7 @@ function AddCoursePage() {
                       <div className="single-input mb-30">
                         <label htmlFor="thumbnail">Thumbnail</label>
                         <input
+                        className="form-control"
                           type="file"
                           required
                           id="thumbnail"
@@ -130,6 +217,7 @@ function AddCoursePage() {
                           Overview iFrame
                         </label>
                         <input
+                        className="form-control"
                           type="file"
                           required
                           id="overviewIframe"
@@ -156,8 +244,12 @@ function AddCoursePage() {
                             label="Module Name"
                             onChange={handleChange2}
                           >
-                            <MenuItem value={"Course 1"}>Course 1</MenuItem>
-                            <MenuItem value={"Course 2"}>Course 2</MenuItem>
+                          {modules.map((module, index)=>{
+                            return(
+                              <MenuItem key={index} value={module}>{module.name}</MenuItem>
+                            )
+                           
+                          })}
                           </Select>
                         </FormControl>
                       </div>
@@ -167,9 +259,11 @@ function AddCoursePage() {
                         className="single-input mb-30"
                       >
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             setAddModule("block");
                             setAddModuleVisible("none");
+                            setModuleRequired(true);
                           }}
                           className="btn btn-primary btn-hover-secondary"
                         >
@@ -182,7 +276,7 @@ function AddCoursePage() {
                           <label htmlFor="moduleName">Module Name</label>
                           <input
                             type="text"
-                            required
+                            required={moduleRequired}
                             id="moduleName"
                             name="moduleName"
                             placeholder="Module Name"
@@ -195,7 +289,7 @@ function AddCoursePage() {
                           </label>
                           <input
                             type="text"
-                            required
+                            required={moduleRequired}
                             id="moduleDescription"
                             name="moduleDescription"
                             placeholder="Module Description"
@@ -232,9 +326,11 @@ function AddCoursePage() {
                           className="single-input mb-30"
                         >
                           <button
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setAddResource("block");
                               setAddResourceVisible("none");
+                              setAddResourceRequired(true);
                             }}
                             className="btn btn-primary btn-hover-secondary"
                           >
@@ -249,7 +345,7 @@ function AddCoursePage() {
                             </label>
                             <input
                               type="text"
-                              required
+                              required={addResourceRequired}
                               id="moduleResourcesName"
                               name="moduleResourcesName"
                               placeholder="Module Resources Name"
@@ -282,7 +378,8 @@ function AddCoursePage() {
                             <label htmlFor="videoUrl">Video</label>
                             <input
                               type="file"
-                              required
+                              className="form-control"
+                              required={videoRequired}
                               id="videoUrl"
                               name="videoUrl"
                             />
@@ -295,7 +392,7 @@ function AddCoursePage() {
                             <label htmlFor="quiz">Quiz</label>
                             <input
                               type="text"
-                              required
+                              required={quizRequired}
                               id="quiz"
                               name="quiz"
                               placeholder="Quiz"
@@ -309,7 +406,7 @@ function AddCoursePage() {
                             <label htmlFor="lesson">Lesson</label>
                             <input
                               type="text"
-                              required
+                              required={lessonRequired}
                               id="lesson"
                               name="lesson"
                               placeholder="Lesson"
@@ -322,7 +419,7 @@ function AddCoursePage() {
                             </label>
                             <input
                               type="number"
-                              required
+                              required={addResourceRequired}
                               id="moduleResourcesDuration"
                               name="moduleResourcesDuration"
                               placeholder="Module Resources Duration"
@@ -335,7 +432,7 @@ function AddCoursePage() {
                             </label>
                             <input
                               type="text"
-                              required
+                              required={addResourceRequired}
                               id="moduleResourcesNextResource"
                               name="moduleResourcesNextResource"
                               placeholder="Module Resources Next Resource"
@@ -348,7 +445,7 @@ function AddCoursePage() {
                             </label>
                             <input
                               type="text"
-                              required
+                              required={addResourceRequired}
                               id="moduleResourcesNextModule"
                               name="moduleResourcesNextModule"
                               placeholder="Module Resources Next Module"
@@ -372,8 +469,11 @@ function AddCoursePage() {
                             label="Instructor Name"
                             onChange={handleChange}
                           >
-                            <MenuItem value={"Abhay"}>Abhay</MenuItem>
-                            <MenuItem value={"Vijay"}>Vijay</MenuItem>
+                          {instructor.map((instructor, index)=>{
+                            return(
+                              <MenuItem key={index} value={instructor}>{instructor.name}</MenuItem>
+                            )
+                          })}
                           </Select>
                         </FormControl>
                       </div>
@@ -457,10 +557,7 @@ function AddCoursePage() {
                         />
                       </div>
 
-                      <br />
-                      <br />
-
-                      <div className="single-input mb-30">
+                      {/* <div className="single-input mb-30">
                         <label htmlFor="reviewRating">Review Rating</label>
                         <input
                           type="number"
@@ -491,7 +588,7 @@ function AddCoursePage() {
                           name="reviewStudent"
                           placeholder="Review Student"
                         />
-                      </div>
+                      </div> */}
 
                       <br />
                       <br />
@@ -499,7 +596,7 @@ function AddCoursePage() {
                       <div className="single-input mb-30">
                         <label htmlFor="duration">Duration</label>
                         <input
-                          type="text"
+                          type="number"
                           required
                           id="duration"
                           name="duration"
@@ -510,7 +607,7 @@ function AddCoursePage() {
                       <div className="single-input mb-30">
                         <label htmlFor="lectures">Lectures</label>
                         <input
-                          type="text"
+                          type="number"
                           required
                           id="lectures"
                           name="lectures"
@@ -532,7 +629,7 @@ function AddCoursePage() {
                       <div className="single-input mb-30">
                         <label htmlFor="enrolled">Enrolled</label>
                         <input
-                          type="text"
+                          type="number"
                           required
                           id="enrolled"
                           name="enrolled"
@@ -543,8 +640,8 @@ function AddCoursePage() {
                       <div className="single-input mb-30">
                         <label htmlFor="signature">Signature &nbsp;</label>
                         <input
+                        className="form-check-input"
                           type="checkbox"
-                          required
                           id="signature"
                           name="signature"
                         />
