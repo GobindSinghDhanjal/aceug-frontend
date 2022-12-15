@@ -12,14 +12,14 @@ const CourseTile = ({ course }) => {
         <div className="course-2">
           <div className="thumbnail">
             <Link to={url} className="image">
-              <img src={course.thumbnail} alt="Course Image" height={200} />
+              <img src={baseURL+course.thumbnail} alt="Course Image" height={200} />
             </Link>
           </div>
           <div className="info">
             <span className="price p-5">₹{course.price}</span>
             <span className="date">{course.createdOn}</span>
             <h3 className="title">
-              <a href="course-details-standard-sidebar.html">{course.name}</a>
+              <Link to={url}>{course.name}</Link>
             </h3>
             <ul className="meta">
               <li>
