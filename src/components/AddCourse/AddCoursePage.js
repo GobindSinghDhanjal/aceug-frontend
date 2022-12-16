@@ -18,6 +18,8 @@ function AddCoursePage() {
   const [instructor, setInstructor] = useState([]);
   const [instructors, setInstructors] = useState([]);
 
+  const [thumbnail, setThumbnail] = useState("");
+
   const [moduleName, setModuleName] = React.useState("");
   const [module, setModule] = useState([]);
   const [modules, setModules] = useState([]);
@@ -45,12 +47,9 @@ function AddCoursePage() {
   const [videoRequired, setVideoRequired] = useState(false);
   const [lesson, setLesson] = useState("");
   const [lessonRequired, setLessonRequired] = useState(false);
-  const [quiz, setQuiz] = useState("");
-  const [quizRequired, setQuizRequired] = useState(false);
 
   const [videoPanel, setVideoPanel] = useState("none");
   const [lessonPanel, setLessonPanel] = useState("none");
-  const [quizPanel, setQuizPanel] = useState("none");
 
   useEffect(() => {
     handleChange5(resourceType);
@@ -149,6 +148,15 @@ function AddCoursePage() {
     });
   };
 
+  // const thumbnailChange = (e) =>{
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(e.target.files[0]);
+
+  //   reader.onloadend = ()=>{
+  //     setThumbnail(JSON.stringify(reader.result))
+  //   }
+  // }
+
   const addNewModule = (e) => {
     e.preventDefault();
 
@@ -232,15 +240,6 @@ function AddCoursePage() {
       }
     }
 
-    if(quizRequired){
-      if(quiz===""){
-        alert("Please Enter Quiz Url");
-        return;
-      }else{
-        content=quiz;
-      }
-    }
-
     const data = {
       name: newResourceName,
       duration: newResourceDuration,
@@ -249,8 +248,6 @@ function AddCoursePage() {
       nextModule: newResourceNextModule,
       content: content
     };
-
-    console.log(data);
   
 
     axios
@@ -285,27 +282,17 @@ function AddCoursePage() {
 
   const handleChange5 = (resourceType) => {
     if (resourceType === "video") {
-      setQuizPanel("none");
+
       setVideoPanel("block");
       setLessonPanel("none");
-      setQuizRequired(false);
+
       setLessonRequired(false);
       setVideoRequired(true);
-    }
-    if (resourceType === "quiz") {
-      setQuizPanel("block");
-      setVideoPanel("none");
-      setLessonPanel("none");
-      setQuizRequired(true);
-      setLessonRequired(false);
-      setVideoRequired(false);
     }
 
     if (resourceType === "lesson") {
       setLessonPanel("block");
       setVideoPanel("none");
-      setQuizPanel("none");
-      setQuizRequired(false);
       setLessonRequired(true);
       setVideoRequired(false);
     }
@@ -313,16 +300,13 @@ function AddCoursePage() {
 
   function formSubmit(e) {
     e.preventDefault();
-    console.log("hello");
-    console.log(e.target.courseName);
-    console.log(e.target.courseName.value);
-    console.log("thumbnail");
-    console.log(e.target.thumbnail.files[0]);
 
     const data = new FormData();
 
+
     data.append("name", e.target.courseName.value);
     data.append("thumbnail", e.target.thumbnail.files[0]);
+    // data.append("thumbnail", thumbnail);
     data.append("overviewDescription", e.target.overviewDescription.value);
     data.append("iframe", e.target.overviewIframe.value);
 
@@ -336,14 +320,12 @@ function AddCoursePage() {
     data.append("enrolled", e.target.enrolled.value);
     data.append("signature", e.target.signature.checked);
 
-    console.log(data);
-
     axios
       .post(baseURL + "courses", data)
       .then((response) => {
         console.log(response);
         alert("Course Added successfully");
-        window.location.href = "/"
+        window.location.href = "/add-course"
       })
       .catch((error) => {
         console.log(error);
@@ -386,6 +368,7 @@ function AddCoursePage() {
                           className="form-control"
                           type="file"
                           required
+                          // onChange={thumbnailChange}
                           id="thumbnail"
                           name="thumbnail"
                         />
@@ -644,7 +627,6 @@ function AddCoursePage() {
                                   >
                                     <MenuItem value={"video"}>Video</MenuItem>
                                     <MenuItem value={"lesson"}>Lesson</MenuItem>
-                                    <MenuItem value={"quiz"}>Quiz</MenuItem>
                                   </Select>
                                 </FormControl>
                               </div>
@@ -661,21 +643,6 @@ function AddCoursePage() {
                                   name="videoUrl"
                                   value={video}
                                   onChange={e=>setVideo(e.target.value)}
-                                />
-                              </div>
-
-                              <div
-                                style={{ display: quizPanel }}
-                                className="single-input mb-30"
-                              >
-                                <label htmlFor="quiz">Quiz</label>
-                                <input
-                                  type="text"
-                                  id="quiz"
-                                  name="quiz"
-                                  placeholder="Quiz"
-                                  value={quiz}
-                                  onChange={e=>setQuiz(e.target.value)}
                                 />
                               </div>
 

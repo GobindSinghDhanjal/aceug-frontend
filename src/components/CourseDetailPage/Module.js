@@ -18,6 +18,7 @@ const Module = ({ module }) => {
         </div>
       </div>
       <ul className="section-content">
+      {console.log(module.resources)}
         {module.resources.map((resource,i) => {
           switch (resource.type) {
             case "video":
