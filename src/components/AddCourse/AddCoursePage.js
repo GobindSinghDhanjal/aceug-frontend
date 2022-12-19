@@ -473,7 +473,7 @@ function AddCoursePage() {
                                 setAddModuleVisible("none");
                                 setModuleRequired(true);
                               }}
-                              className="btn btn-primary btn-hover-secondary"
+                              className="btn btn-primary btn-hover-secondary mw-100"
                             >
                               Not Found Module? Add Now
                             </button>
@@ -569,17 +569,7 @@ function AddCoursePage() {
                               </div>
                             </div>
 
-                            <div
-                              style={{ display: addResourceVisible }}
-                              className="single-input mb-30"
-                            >
-                              <button
-                                onClick={addNewModule}
-                                className="btn btn-primary btn-hover-secondary"
-                              >
-                                Add Module
-                              </button>
-                            </div>
+                            
 
                             <div
                               style={{ display: addResourceVisible }}
@@ -592,9 +582,21 @@ function AddCoursePage() {
                                   setAddResourceVisible("none");
                                   setAddResourceRequired(true);
                                 }}
-                                className="btn btn-primary btn-hover-secondary"
+                                className="btn btn-primary btn-hover-secondary mw-100"
                               >
                                 Not Found Resource? Click Here to Add
+                              </button>
+                            </div>
+
+                            <div
+                              style={{ display: addResourceVisible }}
+                              className="single-input mb-30"
+                            >
+                              <button
+                                onClick={addNewModule}
+                                className="btn btn-primary btn-hover-secondary w-100"
+                              >
+                                Add Module
                               </button>
                             </div>
 

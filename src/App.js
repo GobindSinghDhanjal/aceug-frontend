@@ -9,7 +9,8 @@ import SingleCourseDash from "./components/CourseProgress/SingleCourseDash";
 import { SignUp } from "./components/Authentication/SignUp";
 import AddCoursePage from "./components/AddCourse/AddCoursePage";
 import { Quiz } from "./components/Quiz/Quiz";
-
+import { TestSeriesGridPage } from "./components/TestSeriesGrid/TestSeriesGridPage";
+import {BlogGridPage} from "./components/BlogGrid/BlogGridPage";
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/checkout" element={<CheckOutPage />} />
         <Route path="/course" element={<CoursePage />} />
+        <Route path="/test-series" element={<TestSeriesGridPage/>} />
+        <Route path="/blogs" element={<BlogGridPage />} />
         {/* <Route path="/course/:id" element={<CoursePage />} /> */}
         <Route exact path="/course-dash" element={<SingleCourseDash />} />
       </Routes>

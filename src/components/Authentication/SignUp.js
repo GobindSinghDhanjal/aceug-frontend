@@ -4,6 +4,7 @@ import OtplessSdk from "otpless-js-sdk";
 import { firebase, auth } from "../../firebase";
 import axios from "axios";
 import { baseURL } from "../../shared/baseUrl";
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
   const [phone, setPhone] = useState("");
@@ -12,6 +13,7 @@ export const SignUp = () => {
   const [sendOtpButton, setSendOtpButton] = useState("Send OTP");
   const [submitOtpButton, setSubmitOtpButton] = useState("none");
   const [numberVerified, setNumberVerified] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -73,22 +75,21 @@ export const SignUp = () => {
 
   function onRegister(e) {
     e.preventDefault();
-    console.log(e.target.firstName);
-    console.log(e.target.firstName.value);
 
     if (e.target.password.value === e.target.confirmPassword.value) {
-      if (numberVerified && user) {
+      // if (numberVerified && user) {
+        if(true){
         alert("Done");
         const data = {
           email: e.target.email.value,
           password: e.target.password.value,
-          first_name: e.target.firstName.value,
-          last_name: e.target.lastName.value,
-          class: e.target.class.value,
+          name: e.target.firstName.value,
+          // last_name: e.target.lastName.value,
+          // class: e.target.class.value,
           phone: e.target.phone.value
         }
         axios
-          .post(baseURL + "users/signup",data)
+          .post(baseURL + "student/register",data)
           .then((response) => {
             console.log(response);
             const success = response.data.success;
@@ -96,6 +97,7 @@ export const SignUp = () => {
 
             if (success) {
               alert(message);
+              navigate("/login")
             } else {
               alert(message);
             }
@@ -115,7 +117,7 @@ export const SignUp = () => {
   return (
     <>
       <div className="page-title-section section">
-        <div id="recaptcha-container" style={{ display: "none" }}></div>
+        <div id="recaptcha-container"></div>
         <div className="page-title">
           <div className="container">
             <h1 className="title">Start your learning journey</h1>
@@ -138,7 +140,7 @@ export const SignUp = () => {
                       onSubmit={onRegister}
                     >
                       <div className="single-input mb-30">
-                        <label htmlFor="firstName">First Name</label>
+                        <label htmlFor="firstName">Full Name</label>
                         <input
                           type="text"
                           required
@@ -147,17 +149,8 @@ export const SignUp = () => {
                           placeholder="First Name"
                         />
                       </div>
-                      <div className="single-input mb-30">
-                        <label htmlFor="lastName">Last Name</label>
-                        <input
-                          type="text"
-                          required
-                          id="lastName"
-                          name="lastName"
-                          placeholder="Last Name"
-                        />
-                      </div>
-                      <div className="single-input mb-30">
+
+                      {/* <div className="single-input mb-30">
                         <label htmlFor="class">Class</label>
                         <input
                           type="text"
@@ -166,7 +159,7 @@ export const SignUp = () => {
                           name="class"
                           placeholder="Class"
                         />
-                      </div>
+                      </div> */}
                       <div className="single-input mb-30">
                         <label htmlFor="email">Email</label>
                         <input

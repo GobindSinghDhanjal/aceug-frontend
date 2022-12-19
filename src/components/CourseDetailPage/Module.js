@@ -20,7 +20,7 @@ const Module = ({ module }) => {
       <ul className="section-content">
       {console.log(module.resources)}
         {module.resources.map((resource,i) => {
-          switch (resource.type) {
+          switch (resource.resourceType) {
             case "video":
               return <VideoCourseItem key={i} video={resource} />;
             case "quiz":

@@ -12,7 +12,7 @@ const CourseTile = ({ course }) => {
         <div className="course-2">
           <div className="thumbnail">
             <Link to={url} className="image">
-              <img src={baseURL+course.thumbnail} alt="Course Image" height={200} />
+              <img src={course.thumbnail} alt="Course Image" height={200} />
             </Link>
           </div>
           <div className="info">
@@ -21,12 +21,20 @@ const CourseTile = ({ course }) => {
             <h3 className="title">
               <Link to={url}>{course.name}</Link>
             </h3>
-            <ul className="meta">
+            <ul className="meta p-0 m-0">
               <li>
                 <i className="far fa-file-alt"></i>
                 {course.duration} Weeks
               </li>
             </ul>
+            <div className="lp-course-buttons mt-2">
+                  <button
+                    className="btn btn-primary btn-hover-secondary btn-width-100"
+         
+                  >
+                    Enroll
+                  </button>
+                </div>
           </div>
         </div>
       </div>

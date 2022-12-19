@@ -19,7 +19,7 @@ const CoursePage = () => {
   useEffect(() => {
 
     axios
-    .get(baseURL + "courses/"+ id.toString())
+    .get(baseURL + "courses/course/"+ id.toString())
     .then((data) =>
     data.data
     )

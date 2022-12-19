@@ -75,7 +75,7 @@ const SideBar = ({ course }) => {
                     Enroll
                   </button>
                 </div>
-                <div className="entry-course-share">
+                {/* <div className="entry-course-share">
                   <div className="share-media">
                     <div className="share-label">Share this course</div>
                     <span className="share-icon far fa-share-alt"></span>
@@ -118,7 +118,7 @@ const SideBar = ({ course }) => {
                       </a>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

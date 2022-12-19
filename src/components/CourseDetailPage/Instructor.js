@@ -1,6 +1,7 @@
 import React from "react";
 
 const Instructor = ({ instructor }) => {
+  console.log(instructor);
   return (
     <div className="course-instructor">
       <div className="row">

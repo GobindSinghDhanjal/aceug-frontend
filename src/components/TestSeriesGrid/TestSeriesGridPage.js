@@ -1,33 +1,34 @@
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { baseURL } from "../../shared/baseUrl";
-import CourseTile from "./CourseTile";
+import {TestSeriesTile} from "./TestSeriesTile";
 
-const Courses = () => {
-  const [courses, setCourses] = useState([]);
-  const [page, setPage] = useState(0);
-  useEffect(() => {
-
-    const data ={
-      page:"0",
-      name: "abc"
-    }
-    axios
-      .get(baseURL + "courses/"+page)
-      .then((data) => data.data)
-      .then((courses) => {
-        setCourses(courses);
-        console.log(courses);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+export const TestSeriesGridPage = () => {
+    const [testSeries, setTestSeries] = useState([]);
+    const [page, setPage] = useState(0);
+    useEffect(() => {
+  
+      const data ={
+        page:"0",
+        name: "abc"
+      }
+      axios
+        .get(baseURL + "testSeries/"+page)
+        .then((data) => data.data)
+        .then((testSeries) => {
+          setTestSeries(testSeries);
+          console.log(testSeries);
+        })
+        .catch((err) => console.log(err));
+    }, []);
 
   return (
     <>
-      <div className="page-title-section section">
+    <div className="page-title-section section">
         <div className="page-title">
           <div className="container">
-            <h1 className="title">Courses</h1>
+            <h1 className="title">TestSeries</h1>
           </div>
         </div>
       </div>
@@ -37,14 +38,14 @@ const Courses = () => {
           <div className="row justify-content-between align-items-center max-mb-20">
             <div className="col-sm-auto col-12 max-mb-10">
               <p className="result-count">
-                We found <span>{courses.length}</span> courses available for you
+                We found <span>{testSeries.length}</span> testSeries available for you
               </p>
             </div>
           </div>
 
           <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 max-mb-n30">
-            {courses.map((course, i) => (
-              <CourseTile key={i} course={course} />
+            {testSeries.map((testSeries, i) => (
+              <TestSeriesTile key={i} testSeries={testSeries} />
             ))}
           </div>
 
@@ -59,9 +60,7 @@ const Courses = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>   
     </>
-  );
-};
-
-export default Courses;
+  )
+}

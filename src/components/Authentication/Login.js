@@ -1,7 +1,38 @@
+import axios from "axios";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { baseURL } from "../../shared/baseUrl";
 
 
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  function onFormLogin(e) {
+    e.preventDefault();
+
+    const data = {
+      email: e.target.email.value,
+      password: e.target.password.value
+    }
+
+    axios.post(baseURL+"student/login",data).then((response)=>{
+      console.log("responseeee",response);
+
+      const success = response.data.success;
+
+      if(!success){
+        console.log("respoo",response);
+        alert(response.data.msg)
+      }else{
+        localStorage.setItem('token', response.data.token);
+        navigate("/");
+      }
+    }).catch((error)=>{
+      console.log(error);
+    })
+
+  }
 
   return (
     <>
@@ -22,18 +53,18 @@ const Login = () => {
                 <div className="col-xl-6 col-lg-6">
                   <div className="login-form-wrapper">
                     <h3 className="title">Login</h3>
-                    <form className="login-form" action="#">
+                    <form className="login-form" onSubmit={onFormLogin}>
                       <div className="single-input mb-30">
-                        <label for="username">Username or email</label>
+                        <label htmlFor="email">Email</label>
                         <input
                           type="text"
-                          id="username"
-                          name="username"
-                          placeholder="Username or email"
+                          id="email"
+                          name="email"
+                          placeholder="Email"
                         />
                       </div>
                       <div className="single-input mb-30">
-                        <label for="password">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input
                           type="text"
                           id="password"
@@ -50,7 +81,7 @@ const Login = () => {
                                 name="login-form-remember"
                                 id="login-form-remember"
                               />
-                              <label for="login-form-remember">
+                              <label htmlFor="login-form-remember">
                                 Remember me
                               </label>
                             </div>

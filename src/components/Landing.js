@@ -6,10 +6,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { baseURL } from "../shared/baseUrl";
 import { SignatureCourse } from "./SignatureCourse";
-import { firebase, auth } from '../firebase';
+import { firebase, auth } from "../firebase";
 
 const Landing = () => {
-
   const [courses, setCourses] = useState([]);
   const [user, setUser] = useState([]);
   useEffect(() => {
@@ -20,8 +19,6 @@ const Landing = () => {
         setCourses(courses);
       })
       .catch((err) => console.log(err));
-
-      
   }, []);
 
   return (
@@ -136,7 +133,7 @@ const Landing = () => {
                 <Link
                   to="/courses"
                   className="icon-box text-center"
-                  style={{height: "100%"}}
+                  style={{ height: "100%" }}
                   data-vivus-hover
                 >
                   <div className="icon">
@@ -164,7 +161,7 @@ const Landing = () => {
               <div className="col" data-aos="fade-up">
                 <Link
                   to="/courses"
-                  style={{height: "100%"}}
+                  style={{ height: "100%" }}
                   className="icon-box text-center"
                   data-vivus-hover
                 >
@@ -193,7 +190,7 @@ const Landing = () => {
               <div className="col" data-aos="fade-up">
                 <Link
                   to="/courses"
-                  style={{height: "100%"}}
+                  style={{ height: "100%" }}
                   className="icon-box text-center"
                   data-vivus-hover
                 >
@@ -221,7 +218,7 @@ const Landing = () => {
               <div className="col" data-aos="fade-up">
                 <Link
                   to="/courses"
-                  style={{height: "100%"}}
+                  style={{ height: "100%" }}
                   className="icon-box text-center"
                   data-vivus-hover
                 >
@@ -351,7 +348,7 @@ const Landing = () => {
                 }}
                 loop
               >
-                {TESTIMONIALS.map((TESTIMONIAL,i) => {
+                {TESTIMONIALS.map((TESTIMONIAL, i) => {
                   return (
                     <SwiperSlide key={i}>
                       <div className="testimonial col-12">
@@ -391,11 +388,14 @@ const Landing = () => {
             </div>
 
             <div className="about-me-video-wrapper">
+              
               <a
-                href="https://www.youtube.com/watch?v=eS9Qm4AOOBY"
+                href="https://www.youtube.com/watch?v=Dx9bRbhT3SE"
                 className="about-me-video video-popup"
                 data-aos="fade-up"
+                target="_blank"
               >
+        
                 <img
                   className="image"
                   src="assets/images/about/about-me/about-me-popup-video-poster.jpg"
@@ -455,12 +455,10 @@ const Landing = () => {
               <h2 className="title">Current Signature Courses</h2>
             </div>
 
-  
-        
             <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 max-mb-n30">
-            {courses.map((course,i)=>{
-              return (<SignatureCourse key={i} course={course} />)
-            })}
+              {courses.map((course, i) => {
+                return <SignatureCourse key={i} course={course} />;
+              })}
             </div>
 
             <div className="row max-mt-70">
@@ -628,10 +626,7 @@ const Landing = () => {
               <div className="col-lg-12">
                 <div className="brand-wrapper">
                   <div className="brand-list">
-                    <div
-                      className="brand-carousel"
-                      data-aos="fade-up"
-                    >
+                    <div className="brand-carousel" data-aos="fade-up">
                       <Swiper
                         slidesPerView={6}
                         centeredSlides
