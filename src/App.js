@@ -11,6 +11,11 @@ import AddCoursePage from "./components/AddCourse/AddCoursePage";
 import { Quiz } from "./components/Quiz/Quiz";
 import { TestSeriesGridPage } from "./components/TestSeriesGrid/TestSeriesGridPage";
 import {BlogGridPage} from "./components/BlogGrid/BlogGridPage";
+import { BlogDetail } from "./components/BlogDetailPage/BlogDetail";
+import { StudentDashboard } from "./components/StudentDashboard/StudentDashboard";
+import '@tremor/react/dist/esm/tremor.css';
+import { QuizGamePage } from "./components/QuizGame/QuizGamePage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +30,9 @@ function App() {
         <Route path="/course" element={<CoursePage />} />
         <Route path="/test-series" element={<TestSeriesGridPage/>} />
         <Route path="/blogs" element={<BlogGridPage />} />
+        <Route path="/blog" element={<BlogDetail />} />
+        <Route path="/quiz-game" element={<QuizGamePage />} />
+        <Route path="/student-dashboard" element={<StudentDashboard />} />
         {/* <Route path="/course/:id" element={<CoursePage />} /> */}
         <Route exact path="/course-dash" element={<SingleCourseDash />} />
       </Routes>

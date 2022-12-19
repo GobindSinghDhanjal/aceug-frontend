@@ -18,7 +18,7 @@ const CourseTile = ({ course }) => {
           <div className="info">
             <span className="price p-5">₹{course.price}</span>
             <span className="date">{course.createdOn}</span>
-            <h3 className="title">
+            <h3 className="title" style={{textAlign: "left"}}>
               <Link to={url}>{course.name}</Link>
             </h3>
             <ul className="meta p-0 m-0">

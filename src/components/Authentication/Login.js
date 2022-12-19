@@ -1,5 +1,7 @@
+import { Alert } from "@mui/material";
 import axios from "axios";
 import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../shared/baseUrl";
 
@@ -7,6 +9,7 @@ import { baseURL } from "../../shared/baseUrl";
 const Login = () => {
 
   const navigate = useNavigate();
+  const [ errorBox , setErrorBox] = useState("none");
 
   function onFormLogin(e) {
     e.preventDefault();
@@ -23,10 +26,11 @@ const Login = () => {
 
       if(!success){
         console.log("respoo",response);
-        alert(response.data.msg)
+        // alert(response.data.msg);
+        setErrorBox("flex")
       }else{
         localStorage.setItem('token', response.data.token);
-        navigate("/");
+        navigate("/student-dashboard");
       }
     }).catch((error)=>{
       console.log(error);
@@ -54,6 +58,9 @@ const Login = () => {
                   <div className="login-form-wrapper">
                     <h3 className="title">Login</h3>
                     <form className="login-form" onSubmit={onFormLogin}>
+                    <div className="single-input">
+                    <Alert severity="error" className="mb-3" style={{display: errorBox}}>You have entered wrong email or password</Alert>
+                    </div>
                       <div className="single-input mb-30">
                         <label htmlFor="email">Email</label>
                         <input

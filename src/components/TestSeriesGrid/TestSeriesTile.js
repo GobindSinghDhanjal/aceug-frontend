@@ -14,17 +14,21 @@ export const TestSeriesTile = ({testSeries}) => {
           </Link>
         </div>
         <div className="info">
-          <span className="price p-5">₹{testSeries.price}</span>
+        {testSeries.price===0||null?(<span className="price p-5">Free</span>): <span className="price p-5">₹{testSeries.price}</span>}
+         
           <span className="date">{testSeries.createdOn}</span>
-          <h3 className="title">
+          <h3 className="title" style={{textAlign: "left"}}>
             <Link to={url}>{testSeries.name}</Link>
           </h3>
-          <ul className="meta">
-            <li>
-              <i className="far fa-file-alt"></i>
-              {testSeries.duration} Weeks
-            </li>
-          </ul>
+         
+          <div className="lp-course-buttons mt-2">
+                  <button
+                    className="btn btn-primary btn-hover-secondary btn-width-100"
+         
+                  >
+                    Enroll
+                  </button>
+                </div>
         </div>
       </div>
     </div>

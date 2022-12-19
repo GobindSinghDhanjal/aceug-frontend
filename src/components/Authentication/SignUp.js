@@ -77,7 +77,7 @@ export const SignUp = () => {
     e.preventDefault();
 
     if (e.target.password.value === e.target.confirmPassword.value) {
-      // if (numberVerified && user) {
+      if (numberVerified && user) {
         if(true){
         alert("Done");
         const data = {
@@ -106,7 +106,8 @@ export const SignUp = () => {
             const errorMsg = error.message;
             alert(errorMsg);
           });
-      } else {
+      }
+     } else {
         alert("Please enter the correct otp");
       }
     } else {

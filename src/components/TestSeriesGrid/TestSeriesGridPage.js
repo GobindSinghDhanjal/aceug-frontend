@@ -9,10 +9,7 @@ export const TestSeriesGridPage = () => {
     const [page, setPage] = useState(0);
     useEffect(() => {
   
-      const data ={
-        page:"0",
-        name: "abc"
-      }
+
       axios
         .get(baseURL + "testSeries/"+page)
         .then((data) => data.data)
