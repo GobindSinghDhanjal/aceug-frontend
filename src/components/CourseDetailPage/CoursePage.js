@@ -9,6 +9,8 @@ import Reviews from "./Reviews";
 import SideBar from "./SideBar";
 import { baseURL } from "../../shared/baseUrl";
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const CoursePage = () => {
   const [course, setCourse] = useState([]);
@@ -30,7 +32,9 @@ const CoursePage = () => {
   }, []);
 
   if(!course){
-    return(<h1>Loading</h1>)
+    return( <Box sx={{ display: 'flex' }}>
+    <CircularProgress />
+  </Box>)
   }
   
   return (

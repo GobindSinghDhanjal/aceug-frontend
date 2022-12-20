@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper } from 'swiper/react'
 import { Card, Title, DonutChart, Button, Metric } from '@tremor/react';
 import { CourseProgressTile } from './CourseProgressTile';
 import { TestProgressTile } from './TestProgressTile';
 import { useNavigate } from 'react-router-dom';
+import useUser from '../../Hooks/useUser';
 
 
 
 export const StudentDashboard = () => {
+
+  const user = useUser();
+  console.log(user)
+
+
+
   const cities = [
     {
         name: 'New York',
@@ -58,7 +65,7 @@ const navigate = useNavigate();
             <div className="col-3 mt-2">
             <Card maxWidth="max-w-lg">
           
-            <Metric>Hi, Raj</Metric>
+            <Metric>Hi, {user?user.name:"No User"}</Metric>
 
             <hr />
             <Title>Welcome Back !!!</Title>

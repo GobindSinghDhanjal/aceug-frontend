@@ -20,15 +20,14 @@ const Login = () => {
     }
 
     axios.post(baseURL+"student/login",data).then((response)=>{
-      console.log("responseeee",response);
 
       const success = response.data.success;
 
       if(!success){
-        console.log("respoo",response);
         // alert(response.data.msg);
         setErrorBox("flex")
       }else{
+        axios.defaults.headers.common["Authorization"] = response.data.token;
         localStorage.setItem('token', response.data.token);
         navigate("/student-dashboard");
       }

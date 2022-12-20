@@ -1,73 +1,118 @@
-import React, { Component } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { baseURL } from "../../shared/baseUrl";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
-class CheckOutPage extends Component {
-  render() {
+const CheckOutPage = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const token = localStorage.getItem("token");
+
+  const [course, setCourse] = useState({});
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("courseId");
+
+  const url = "/course?courseId=" + id;
+
+  useEffect(() => {
+    axios
+      .get(baseURL + "courses/course/" + id.toString())
+      .then((data) => data.data)
+      .then((course) => {
+        setCourse(course);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  if (!course) {
     return (
-      <>
-        <div className="page-title-section section">
-          <div className="page-title">
-            <div className="container">
-              <h1 className="title">Course Checkout</h1>
-            </div>
-          </div>
-          <div className="page-breadcrumb">
-            <div className="container">
-              <ul className="breadcrumb">
-                <li>
-                  <a href="index.html">Home</a>
-                </li>
-                <li className="current">Course Checkout</li>
-              </ul>
-            </div>
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!token) {
+    navigate("/login?courseId=" + id);
+    return;
+  }
+
+  return (
+    <>
+      <div className="page-title-section section">
+        <div className="page-title">
+          <div className="container">
+            <h1 className="title">Course Checkout</h1>
           </div>
         </div>
-
-        <div className="checkout-section section section-padding-bottom">
+        <div className="page-breadcrumb">
           <div className="container">
-            <div className="row">
-              <div className="col-12">
-                <div className="row row-40">
-                  <div className="col-lg-7">
-                    <button className="btn btn-primary btn-hover-secondary btn-width-40 ">
-                      Back to Course Curriculum
+            <ul className="breadcrumb">
+              <li>
+                <a href="index.html">Home</a>
+              </li>
+              <li className="current">Course Checkout</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="checkout-section section section-padding-bottom">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="row row-40">
+                <div className="col-lg-7">
+                  <Link
+                    to={url}
+                    className="btn btn-primary btn-hover-secondary btn-width-40 "
+                  >
+                    Back to Course Curriculum
+                  </Link>
+                  <div className="row mt-3">
+                    <div className="col-md-12 col-12 mb-20">
+                      <label>Full Name*</label>
+                      <input type="text" placeholder="Full Name" value={name} onChange={(e)=>setName(e.target.value)} />
+                    </div>
+
+                    <div className="col-md-12 col-12 mb-20">
+                      <label>Email Address*</label>
+                      <input type="email" placeholder="Email Address" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                    </div>
+
+                    <div className="col-md-12 col-12 mb-20">
+                      <label>Phone no*</label>
+                      <input type="text" placeholder="Phone number" value={phone} onChange={(e)=>setPhone(e.target.value)} />
+                    </div>
+
+                    <button className="btn btn-primary btn-hover-secondary btn-width-100 mt-40">
+                      Place order
                     </button>
-                    <div className="row mt-3">
-                      <div className="col-md-12 col-12 mb-20">
-                        <label>First Name*</label>
-                        <input type="text" placeholder="First Name" />
-                      </div>
-
-                      <div className="col-md-12 col-12 mb-20">
-                        <label>Email Address*</label>
-                        <input type="email" placeholder="Email Address" />
-                      </div>
-
-                      <div className="col-md-12 col-12 mb-20">
-                        <label>Phone no*</label>
-                        <input type="text" placeholder="Phone number" />
-                      </div>
-
-                      <button className="btn btn-primary btn-hover-secondary btn-width-100 mt-40">
-                        Place order
-                      </button>
-                    </div>
                   </div>
+                </div>
 
-                  <div className="col-lg-5">
-                    <h5>Your Course</h5>
-                    <div className="border border-rounded">
-                      <ul>
-                        <li>Course 1</li>
-                      </ul>
-                    </div>
+                <div className="col-lg-5">
+                  <h5>Your Course</h5>
+                  <div className="border border-rounded">
+                    <ul>
+                      <li>{course.name}</li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/*    <div className="checkout-section section section-padding-bottom">
+      {/*    <div className="checkout-section section section-padding-bottom">
           <div className="container">
             <div className="row">
               <div className="col-12">
@@ -359,9 +404,8 @@ class CheckOutPage extends Component {
             </div>
           </div>
         </div> */}
-      </>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default CheckOutPage;

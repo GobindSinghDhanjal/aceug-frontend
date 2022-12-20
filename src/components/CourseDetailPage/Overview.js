@@ -1,10 +1,14 @@
 import React from "react";
 import { baseURL } from "../../shared/baseUrl";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Overview = ({ overview }) => {
 
   if(!overview){
-    return (<h1>Loading</h1>)
+    return (<Box sx={{ display: 'flex' }}>
+    <CircularProgress />
+  </Box>)
   }
 
   return (

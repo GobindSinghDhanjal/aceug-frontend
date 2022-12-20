@@ -1,19 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Razorpay from "../CheckOut/Razorpay";
 
 const SideBar = ({ course }) => {
 
-  const { user, isAuthenticated, isLoading, loginWithPopup } = useAuth0();
+  const navigate = useNavigate();
 
   function onEnrollClick() {
-
-    if(user && isAuthenticated){
-      alert("Enrolled");
-    }else{
-      loginWithPopup();
-    }
+    navigate("/checkout?courseId="+course._id)
   }
   return (
     <>

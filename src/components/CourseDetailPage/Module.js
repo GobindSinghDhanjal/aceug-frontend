@@ -2,11 +2,15 @@ import React from "react";
 import LessonCourseItem from "./LessonCourseItem";
 import QuizCourseItem from "./QuizCourseItem";
 import VideoCourseItem from "./VideoCourseItem";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Module = ({ module }) => {
 
   if(!module){
-    return (<h1>Loading</h1>)
+    return (<Box sx={{ display: 'flex' }}>
+    <CircularProgress />
+  </Box>)
   }
 
   return (
@@ -18,7 +22,7 @@ const Module = ({ module }) => {
         </div>
       </div>
       <ul className="section-content">
-      {console.log(module.resources)}
+   
         {module.resources.map((resource,i) => {
           switch (resource.resourceType) {
             case "video":
