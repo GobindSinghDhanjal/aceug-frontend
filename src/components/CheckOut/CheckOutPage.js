@@ -4,9 +4,13 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { baseURL } from "../../shared/baseUrl";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import useUser from "../../Hooks/useUser";
+import Razorpay from "./Razorpay";
 
 const CheckOutPage = () => {
   const navigate = useNavigate();
+
+  const user = useUser();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,17 +22,33 @@ const CheckOutPage = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("courseId");
+  const testId = searchParams.get("testSeriesId")
 
   const url = "/course?courseId=" + id;
 
   useEffect(() => {
-    axios
+    if(id){
+      axios
       .get(baseURL + "courses/course/" + id.toString())
       .then((data) => data.data)
       .then((course) => {
         setCourse(course);
+        console.log(course);
       })
       .catch((err) => console.log(err));
+    }
+
+    if(testId){
+      axios
+      .get(baseURL + "testseries/test/" + testId.toString())
+      .then((data) => data.data)
+      .then((course) => {
+        setCourse(course);
+        console.log(course);
+      })
+      .catch((err) => console.log(err));
+    }
+   
   }, []);
 
   if (!course) {
@@ -77,6 +97,7 @@ const CheckOutPage = () => {
                     Back to Course Curriculum
                   </Link>
                   <div className="row mt-3">
+                  {user?null: <div>
                     <div className="col-md-12 col-12 mb-20">
                       <label>Full Name*</label>
                       <input type="text" placeholder="Full Name" value={name} onChange={(e)=>setName(e.target.value)} />
@@ -91,20 +112,48 @@ const CheckOutPage = () => {
                       <label>Phone no*</label>
                       <input type="text" placeholder="Phone number" value={phone} onChange={(e)=>setPhone(e.target.value)} />
                     </div>
-
-                    <button className="btn btn-primary btn-hover-secondary btn-width-100 mt-40">
-                      Place order
-                    </button>
+                    </div>}
                   </div>
                 </div>
 
                 <div className="col-lg-5">
                   <h5>Your Course</h5>
-                  <div className="border border-rounded">
-                    <ul>
-                      <li>{course.name}</li>
-                    </ul>
+              
+                  <div className="login-form-wrapper p-3 mb-4">
+                    <div className="row">
+                      <h3>{course.name}</h3>
+                      <br />
+                      <br />
+                      <div className="row">
+                        <div className="col-6">
+                        <h5>Rs {course.price}</h5>
+                        </div>
+
+                        <div className="col text-right">
+                        <h5>Days: {course.days}</h5>
+                        </div>
+                        </div>
+                        <br />
+                        <br />
+                    
+                    <div>
+
+                    {id?<Razorpay courseId={id} />:null}
+
+                    {testId?<Razorpay testId={testId} />:null}
+                    
+                    
+                      {/* <button  className="btn btn-primary btn-hover-secondary">
+                      Place Order
+                      </button> */}
+                      </div>
+                 
+
+                    </div>
+                     
+                    
                   </div>
+                
                 </div>
               </div>
             </div>

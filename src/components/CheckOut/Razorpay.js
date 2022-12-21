@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as React from "react";
+import { baseURL } from "../../shared/baseUrl";
 
-function Razorpay() {
+function Razorpay(course) {
   function loadScript(src) {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -26,7 +27,7 @@ function Razorpay() {
       return;
     }
 
-    const result = await axios.post("http://localhost:5000/payment/orders");
+    const result = await axios.post(baseURL + "payment/orders");
 
     if (!result) {
       alert("Server error. Are you online?");
@@ -35,26 +36,36 @@ function Razorpay() {
 
     const { amount, id: order_id, currency } = result.data;
 
+    const notes = {
+      studentId: localStorage.getItem("token"),
+      courseId: course.courseId,
+      testId: course.testId,
+    };
+
     const options = {
-      key: "rzp_test_q62bPIiEjKgnyW", // Enter the Key ID generated from the Dashboard
+      key: "rzp_test_18Afta030OaQku", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
+      // callback_url: baseURL +" payment/razorpay/callback",
+      // redirect:true,
       name: "Soumya Corp.",
       description: "Test Transaction",
 
       order_id: order_id,
       handler: async function(response) {
         const data = {
+          notes: notes,
           orderCreationId: order_id,
           razorpayPaymentId: response.razorpay_payment_id,
           razorpayOrderId: response.razorpay_order_id,
           razorpaySignature: response.razorpay_signature,
         };
 
-        const result = await axios.post(
-          "http://localhost:5000/payment/success",
-          data
-        );
+        const result = await axios.post(baseURL + "payment/success", data, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
 
         alert(result.data.msg);
       },
@@ -76,8 +87,11 @@ function Razorpay() {
   }
 
   return (
-    <button className="Razorpay-link" onClick={displayRazorpay}>
-      Pay ₹500
+    <button
+      className="btn btn-primary btn-hover-secondary"
+      onClick={displayRazorpay}
+    >
+      Place Order
     </button>
   );
 }

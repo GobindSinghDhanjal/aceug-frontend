@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const TestSeriesTile = ({testSeries}) => {
 
-    const url = "/testSeries?Id="+testSeries._id;
+    const url = "/test-series-detail?Id="+testSeries._id;
   return (
     <>
     <div className="col max-mb-30" data-aos="fade-up">

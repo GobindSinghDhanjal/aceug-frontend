@@ -11,6 +11,20 @@ const SideBar = ({ course }) => {
   function onEnrollClick() {
     navigate("/checkout?courseId="+course._id)
   }
+
+  function addToCart() {
+    if(localStorage.getItem("cart")){
+      let cart1 = JSON.parse(localStorage.getItem("cart"));
+      const cart = cart1;
+      cart.push({courseId: course._id})
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }else{
+      const cart = [{courseId: course._id}];
+      localStorage.setItem("cart", JSON.stringify(cart));
+      console.log(JSON.parse(localStorage.getItem("cart")));
+    }
+  
+  }
   return (
     <>
       <div className="col-lg-4 col-12 order-lg-2 max-mb-50" id="sticky-sidebar">
@@ -62,6 +76,14 @@ const SideBar = ({ course }) => {
                     </span>
                     <span className="meta-value">{course.language}</span>
                   </div>
+                </div>
+                <div className="lp-course-buttons">
+                  <button
+                    className="btn btn-primary btn-hover-secondary btn-width-100"
+                    onClick={addToCart}
+                  >
+                    Add to cart
+                  </button>
                 </div>
                 <div className="lp-course-buttons">
                   <button
