@@ -17,6 +17,8 @@ import '@tremor/react/dist/esm/tremor.css';
 import { QuizGamePage } from "./components/QuizGame/QuizGamePage";
 import { Cart } from "./components/Cart/Cart";
 import { TestSeriesDetail } from "./components/TestSeriesDetail/TestSeriesDetail";
+import { About } from "./components/About/About";
+import { TestAttemptPage } from "./components/TestAttemptPage/TestAttemptPage";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
         <Route path="/test-series-detail" element={<TestSeriesDetail/>} />
         <Route path="/blogs" element={<BlogGridPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/test-attempt-page" element={<TestAttemptPage />} />
+        <Route path="/about" element={<About />} />
         <Route path="/blog" element={<BlogDetail />} />
         <Route path="/quiz-game" element={<QuizGamePage />} />
         <Route path="/student-dashboard" element={<StudentDashboard />} />

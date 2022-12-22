@@ -2,7 +2,7 @@ import { Alert } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { baseURL } from "../../shared/baseUrl";
 
 
@@ -105,6 +105,11 @@ const Login = () => {
                         <button className="btn btn-primary btn-hover-secondary btn-width-100">
                           Log In
                         </button>
+                      </div>
+                      <div className="single-input mt-3">
+                        <Link to="/signup" className="btn btn-primary btn-hover-secondary btn-width-100">
+                          Sign Up
+                        </Link>
                       </div>
                     </form>
                   </div>

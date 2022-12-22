@@ -651,8 +651,10 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-01.png"
+                                src="assets/images/schools/bal-bharti.png"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
@@ -662,8 +664,10 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-02.png"
+                                src="assets/images/schools/bharat-national-public-school.jpeg"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
@@ -673,8 +677,10 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-03.png"
+                                src="assets/images/schools/dav.png"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
@@ -684,8 +690,10 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-04.png"
+                                src="assets/images/schools/dps.jpeg"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
@@ -695,8 +703,10 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-05.png"
+                                src="assets/images/schools/jbm.jpeg"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
@@ -706,8 +716,10 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-06.png"
+                                src="assets/images/schools/loreto.png"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
@@ -717,8 +729,75 @@ const Landing = () => {
                           <div className="brand">
                             <a href="#">
                               <img
-                                src="assets/images/brand/client-logo-07.png"
+                                src="assets/images/schools/ryan.jpeg"
                                 alt="logo image"
+                                width="100px"
+                                height="100px"
+                              />
+                            </a>
+                          </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                          {" "}
+                          <div className="brand">
+                            <a href="#">
+                              <img
+                                src="assets/images/schools/sneh-ointernational.jpeg"
+                                alt="logo image"
+                                width="100px"
+                                height="100px"
+                              />
+                            </a>
+                          </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                          {" "}
+                          <div className="brand">
+                            <a href="#">
+                              <img
+                                src="assets/images/schools/springdale.png"
+                                alt="logo image"
+                                width="100px"
+                                height="100px"
+                              />
+                            </a>
+                          </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                          {" "}
+                          <div className="brand">
+                            <a href="#">
+                              <img
+                                src="assets/images/schools/sardar-patel-vidyalaya.jpeg"
+                                alt="logo image"
+                                width="100px"
+                                height="100px"
+                              />
+                            </a>
+                          </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                          {" "}
+                          <div className="brand">
+                            <a href="#">
+                              <img
+                                src="assets/images/schools/vasant-valley.png"
+                                alt="logo image"
+                                width="100px"
+                                height="100px"
+                              />
+                            </a>
+                          </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                          {" "}
+                          <div className="brand">
+                            <a href="#">
+                              <img
+                                src="assets/images/schools/The-modern-school.png"
+                                alt="logo image"
+                                width="100px"
+                                height="100px"
                               />
                             </a>
                           </div>
