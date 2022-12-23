@@ -1,9 +1,16 @@
 import React from "react";
 
-export const Section = (props) => {
+export const Section = ({tests, setQuesTitle, setOptions, setCurrentQues, classes}) => {
+
+  if(tests.length===0){
+    return ( 
+      <h1>Loading</h1>
+    )
+  }
+
   return (
-    <div className="col-3">
-      {props.tests.map((test, i) => {
+    <div className={classes}>
+      {tests.map((test, i) => {
         const headingId = "heading" + i;
         const collapseId = "collapse" + i;
         return (
@@ -28,12 +35,13 @@ export const Section = (props) => {
                 data-bs-parent="#accordionExample"
               >
                 <div className="accordion-body">
-                  {test.section.map((section, i) => {
+                  {test.sections.map((section, i) => {
                     return (
                       <div
                         onClick={() => {
-                          props.setQuesTitle(section.ques);
-                          props.setOptions(section.options);
+                          setCurrentQues(section);
+                          setQuesTitle(section.ques);
+                          setOptions(section.options);
                         }}
                         key={i}
                         className="card border-rounded p-3 mt-3 user-select-none"
