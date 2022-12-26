@@ -5,12 +5,11 @@ import { Question } from "./Question";
 import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { baseURL } from "../../shared/baseUrl";
+import useUser from "../../Hooks/useUser";
 
 export const TestAttemptPage = () => {
   const tests2 = [
@@ -158,19 +157,26 @@ export const TestAttemptPage = () => {
     },
   ];
 
+  const testSeriesId = "639862b5e2e1fec3753079ec";
+  const testId = "639861456026cda3221b1516";
+
   const [tests, setTests] = useState([]);
+
+  const user = useUser();
 
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    axios.get(baseURL+"testseries/test/639862b5e2e1fec3753079ec").then((response)=>{
-      console.log(response.data.tests);
-      setTests(response.data.tests)
-    }).catch((error)=>{
-      console.log(error);
-    })
-  },[])
+  useEffect(() => {
+    axios
+      .get(baseURL + "testseries/test/" + testSeriesId)
+      .then((response) => {
+        setTests(response.data.tests);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -182,13 +188,34 @@ export const TestAttemptPage = () => {
 
   const handleCloseAgree = () => {
     setOpen(false);
-    console.log("agree");
-    navigate("/")
+
+    const data = {
+      testseries: testSeriesId,
+      test: testId,
+      student: user._id,
+      answer_map: answers,
+    };
+
+    axios
+      .post(
+        baseURL + "progress/saveprogress/" + testId + "/student/" + user._id,
+        data
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const time = 1800;
+  useEffect(() => {
+    if (tests[0]) {
+      setTimeLeft(tests[0].duration * 60);
+    }
+  }, [tests]);
 
-  const [timeLeft, setTimeLeft] = useState(time);
+  const [timeLeft, setTimeLeft] = useState(1800);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const intervalRef = useRef(); // Add a ref to store the interval id
@@ -204,7 +231,7 @@ export const TestAttemptPage = () => {
   useEffect(() => {
     setMinutes(Math.floor(timeLeft / 60));
     const min = Math.floor(timeLeft / 60);
-    if(timeLeft<=0){
+    if (timeLeft <= 0) {
       handleCloseAgree();
     }
     setSeconds(Math.floor(timeLeft - min * 60));
@@ -213,7 +240,6 @@ export const TestAttemptPage = () => {
     }
   }, [timeLeft]);
 
-  const [quesTitle, setQuesTitle] = useState("No Ques Selected");
   const [currentQues, setCurrentQues] = useState({
     ques: "No question Selected",
     options: [],
@@ -222,14 +248,14 @@ export const TestAttemptPage = () => {
   const [answers, setAnswers] = useState([]);
 
   function onNextQues() {
-    const currentQuesId = currentQues.id;
+    const currentQuesId = currentQues._id;
 
     let sectionIndex = -1;
     let questionIndex = -1;
 
-    tests.map((test, i) => {
-      test.section.find((question, j) => {
-        if (question.id === currentQuesId) {
+    tests[0].sections.map((test, i) => {
+      test.questions.find((question, j) => {
+        if (question._id === currentQuesId) {
           questionIndex = j;
           sectionIndex = i;
         }
@@ -237,13 +263,17 @@ export const TestAttemptPage = () => {
     });
 
     if (sectionIndex > -1 && questionIndex > -1) {
-      if (tests[sectionIndex].section.length > questionIndex + 1) {
-        const nextQues = tests[sectionIndex].section[questionIndex + 1];
+      if (
+        tests[0].sections[sectionIndex].questions.length >
+        questionIndex + 1
+      ) {
+        const nextQues =
+          tests[0].sections[sectionIndex].questions[questionIndex + 1];
 
         setCurrentQues(nextQues);
       } else {
-        if (tests.length > sectionIndex + 1) {
-          const nextQues = tests[sectionIndex + 1].section[0];
+        if (tests[0].sections.length > sectionIndex + 1) {
+          const nextQues = tests[0].sections[sectionIndex + 1].questions[0];
           setCurrentQues(nextQues);
         } else {
           console.log("Quiz finished");
@@ -253,14 +283,14 @@ export const TestAttemptPage = () => {
   }
 
   function onPrevQues() {
-    const currentQuesId = currentQues.id;
+    const currentQuesId = currentQues._id;
 
     let sectionIndex = -1;
     let questionIndex = -1;
 
-    tests.map((test, i) => {
-      test.sections.find((question, j) => {
-        if (question.id === currentQuesId) {
+    tests[0].sections.map((test, i) => {
+      test.questions.find((question, j) => {
+        if (question._id === currentQuesId) {
           questionIndex = j;
           sectionIndex = i;
         }
@@ -269,12 +299,15 @@ export const TestAttemptPage = () => {
 
     if (sectionIndex > -1 && questionIndex > -1) {
       if (questionIndex > 0) {
-        const prevQues = tests[sectionIndex].section[questionIndex - 1];
+        const prevQues =
+          tests[0].sections[sectionIndex].questions[questionIndex - 1];
         setCurrentQues(prevQues);
       } else {
         if (sectionIndex > 0) {
-          const element = tests[sectionIndex - 1].section.length - 1;
-          const prevQues = tests[sectionIndex - 1].section[element];
+          const element =
+            tests[0].sections[sectionIndex - 1].questions.length - 1;
+          const prevQues =
+            tests[0].sections[sectionIndex - 1].questions[element];
           setCurrentQues(prevQues);
         } else {
           console.log("This is first ques");
@@ -283,10 +316,8 @@ export const TestAttemptPage = () => {
     }
   }
 
-  if(tests.length===0){
-    return ( 
-      <h1>Loading</h1>
-    )
+  if (tests.length === 0) {
+    return <h1>Loading</h1>;
   }
 
   return (
@@ -299,14 +330,15 @@ export const TestAttemptPage = () => {
             <h4 className="d-block d-lg-none d-xl-none">
               Time : {minutes}:{seconds}
             </h4>
-            <Button onClick={handleClickOpen} variant="contained">Submit Test</Button>
+            <Button onClick={handleClickOpen} variant="contained">
+              Submit Test
+            </Button>
           </div>
 
           <Section
             classes="col-md-3 d-none d-xs-none d-sm-none d-md-none d-lg-block d-xl-block"
             tests={tests}
             setCurrentQues={setCurrentQues}
-            setQuesTitle={setQuesTitle}
             setOptions={setOptions}
           />
 
@@ -324,7 +356,6 @@ export const TestAttemptPage = () => {
             classes="mt-5 d-block d-lg-none d-md-block d-xl-none"
             tests={tests}
             setCurrentQues={setCurrentQues}
-            setQuesTitle={setQuesTitle}
             setOptions={setOptions}
           />
 
@@ -355,22 +386,20 @@ export const TestAttemptPage = () => {
             <br />
             <div className=" card p-3">
               <div role="group" aria-label="First group">
-                {tests.map((test, i) => {
+                {tests[0].sections.map((test, i) => {
                   return (
                     <div key={i}>
                       <h5>Section {i + 1}</h5>
 
-                      {test.sections.map((section, k) => {
-                        
-                        section.questions.map((question,j)=>{
-                          let found = answers.find((q) => q.id === question.id);
+                      {test.questions.map((question, j) => {
+                        let found = answers.find((q) => q.id === question._id);
 
-                          if (found != null) {
+                        if (found != null) {
                           return (
                             <button
                               type="button"
                               key={j}
-                              id={"button-" + question.id}
+                              id={"button-" + question._id}
                               style={{
                                 backgroundColor: "limegreen",
                                 color: "white",
@@ -386,22 +415,13 @@ export const TestAttemptPage = () => {
                           <button
                             type="button"
                             key={j}
-                            id={"button-" + question.id}
+                            id={"button-" + question._id}
                             className="btn btn-outline-secondary p-3 m-2"
                           >
                             {j + 1}
                           </button>
                         );
-                        })
-
-                        
-
-                        
-
-                        
                       })}
-                      <br />
-                      <br />
                     </div>
                   );
                 })}

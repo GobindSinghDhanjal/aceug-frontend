@@ -1,16 +1,13 @@
 import React from "react";
 
-export const Section = ({tests, setQuesTitle, setOptions, setCurrentQues, classes}) => {
-
-  if(tests.length===0){
-    return ( 
-      <h1>Loading</h1>
-    )
+export const Section = ({ tests, setOptions, setCurrentQues, classes }) => {
+  if (tests.length === 0) {
+    return <h1>Loading</h1>;
   }
 
   return (
     <div className={classes}>
-      {tests.map((test, i) => {
+      {tests[0].sections.map((test, i) => {
         const headingId = "heading" + i;
         const collapseId = "collapse" + i;
         return (
@@ -35,18 +32,17 @@ export const Section = ({tests, setQuesTitle, setOptions, setCurrentQues, classe
                 data-bs-parent="#accordionExample"
               >
                 <div className="accordion-body">
-                  {test.sections.map((section, i) => {
+                  {test.questions.map((question, i) => {
                     return (
                       <div
                         onClick={() => {
-                          setCurrentQues(section);
-                          setQuesTitle(section.ques);
-                          setOptions(section.options);
+                          setCurrentQues(question);
+                          setOptions(question.options);
                         }}
                         key={i}
                         className="card border-rounded p-3 mt-3 user-select-none"
                       >
-                        Q{i + 1}. {section.ques}
+                        Q{i + 1}. {question.statement}
                       </div>
                     );
                   })}

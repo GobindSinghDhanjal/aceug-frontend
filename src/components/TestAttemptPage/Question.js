@@ -23,8 +23,8 @@ export const Question = ({
     setValue("");
 
     answers.map((answer) => {
-      if (answer.id === currentQues.id) {
-        setValue(answer.option);
+      if (answer.id === currentQues._id) {
+        setValue(answer.selected_option);
         setIsFound(true);
       }
     });
@@ -37,11 +37,13 @@ export const Question = ({
   }, [isFound]);
 
   function handleChange(e) {
+    console.log(currentQues);
     setValue(e.target.value);
+    console.log(e.target.value);
     const answer = {
-      id: currentQues.id,
-      ques: currentQues.ques,
-      option: e.target.value,
+      id: currentQues._id,
+      question: currentQues.statement,
+      selected_option: e.target.value,
     };
 
     if (answers.length === 0) {
@@ -50,7 +52,7 @@ export const Question = ({
       let flag = true;
       answers.map((ans) => {
         if (ans.id === answer.id) {
-          ans.option = e.target.value;
+          ans.selected_option = e.target.value;
           flag = false;
         }
       });
@@ -71,24 +73,23 @@ export const Question = ({
     console.log("answers : ", answers);
     console.log(currentQues.id);
 
-    let newAnswers = answers.filter((answer) => answer.id !== currentQues.id);
-    setAnswers(newAnswers)
+    let newAnswers = answers.filter((answer) => answer.id !== currentQues._id);
+    setAnswers(newAnswers);
 
     console.log("after answers : ", answers);
 
-    console.log(currentQues.id);
+    console.log(currentQues._id);
   }
 
   useEffect(() => {
     console.log("this is an : ", answers);
   }, [answers]);
-  
 
   return (
     <div className="col-md-6">
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title">Ques. {currentQues.ques}</h5>
+          <h5 className="card-title">Ques. {currentQues.statement}</h5>
           <div className="card-text">
             <FormControl>
               <RadioGroup
@@ -100,10 +101,10 @@ export const Question = ({
                 {currentQues.options.map((option, i) => {
                   return (
                     <FormControlLabel
-                      key={"currentQues"+i}
-                      value={option.option}
+                      key={"currentQues" + i}
+                      value={option.value}
                       control={<Radio />}
-                      label={option.option}
+                      label={option.value}
                     />
                   );
                 })}
